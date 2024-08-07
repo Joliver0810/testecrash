@@ -1,0 +1,741 @@
+<html><head><base href="https://crash-betting-simulation.example.com/">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CrashBet - Apostas Emocionantes</title>
+<style>
+  body {
+    font-family: 'Roboto', sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #1a1a2e;
+    color: #ffffff;
+    background-image: url('https://crash-betting-simulation.example.com/vaporwave-city-bg.jpg');
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+  }
+  .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+  }
+  header {
+    background-color: rgba(22, 33, 62, 0.8);
+    padding: 20px 0;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(5px);
+  }
+  .main-nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .logo {
+    font-size: 28px;
+    font-weight: bold;
+    color: #e94560;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    text-shadow: 0 0 10px #e94560, 0 0 20px #e94560, 0 0 30px #e94560;
+  }
+  .nav-links {
+    list-style: none;
+    display: flex;
+    margin: 0;
+    padding: 0;
+  }
+  .nav-links li {
+    margin-left: 30px;
+  }
+  .nav-links a {
+    color: #ffffff;
+    text-decoration: none;
+    font-size: 16px;
+    font-weight: 500;
+    transition: color 0.3s ease;
+  }
+  .nav-links a:hover {
+    color: #e94560;
+    text-shadow: 0 0 5px #e94560;
+  }
+  .user-actions {
+    display: flex;
+    gap: 10px;
+  }
+  .btn {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+  .btn-secondary {
+    background-color: transparent;
+    color: #e94560;
+    border: 2px solid #e94560;
+    box-shadow: 0 0 10px #e94560;
+  }
+  .btn-secondary:hover {
+    background-color: #e94560;
+    color: #ffffff;
+    box-shadow: 0 0 20px #e94560;
+  }
+  .btn-primary {
+    background-color: #e94560;
+    color: #ffffff;
+    box-shadow: 0 0 10px #e94560;
+  }
+  .btn-primary:hover {
+    background-color: #ff6b81;
+    box-shadow: 0 0 20px #ff6b81;
+  }
+  .game-area {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 30px;
+  }
+  .crash-graph {
+    width: 65%;
+    height: 400px;
+    background-color: rgba(15, 52, 96, 0.8);
+    border-radius: 10px;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 0 20px rgba(233, 69, 96, 0.5);
+  }
+  .betting-panel {
+    width: 30%;
+    background-color: rgba(22, 33, 62, 0.8);
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 0 20px rgba(233, 69, 96, 0.5);
+  }
+  .bet-input {
+    width: calc(100% - 20px);
+    padding: 10px;
+    margin-bottom: 10px;
+    background-color: rgba(15, 52, 96, 0.8);
+    border: 2px solid #e94560;
+    color: #ffffff;
+    border-radius: 5px;
+    font-size: 16px;
+    transition: all 0.3s ease;
+  }
+  .bet-input:focus {
+    outline: none;
+    box-shadow: 0 0 10px rgba(233, 69, 96, 0.5);
+  }
+  .bet-button {
+    width: 100%;
+    padding: 10px;
+    background-color: #e94560;
+    border: none;
+    color: #ffffff;
+    font-weight: bold;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    font-size: 16px;
+    box-shadow: 0 0 10px rgba(233, 69, 96, 0.5);
+  }
+  .bet-button:hover {
+    background-color: #ff6b81;
+    box-shadow: 0 0 20px rgba(233, 69, 96, 0.7);
+  }
+  .multiplier {
+    font-size: 48px;
+    font-weight: bold;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 10;
+    text-shadow: 0 0 10px #e94560, 0 0 20px #e94560;
+  }
+  .graph-canvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border-radius: 10px;
+  }
+  .bet-history {
+    margin-top: 20px;
+    background-color: rgba(22, 33, 62, 0.8);
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 0 20px rgba(233, 69, 96, 0.5);
+  }
+  .bet-history h3 {
+    margin-top: 0;
+    color: #e94560;
+    text-shadow: 0 0 5px #e94560;
+  }
+  .bet-history-list {
+    list-style-type: none;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+  .bet-history-item {
+    background-color: rgba(15, 52, 96, 0.8);
+    border-radius: 5px;
+    padding: 8px 12px;
+    font-weight: bold;
+    font-size: 14px;
+    transition: all 0.3s ease;
+  }
+  .bet-history-item:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 6px rgba(233, 69, 96, 0.3);
+  }
+  .win {
+    color: #4caf50;
+    text-shadow: 0 0 5px #4caf50;
+  }
+  .lose {
+    color: #f44336;
+    text-shadow: 0 0 5px #f44336;
+  }
+  .rocket {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 40px;
+    height: 40px;
+    transition: transform 0.1s ease;
+    filter: drop-shadow(0 0 5px #e94560);
+  }
+  .balance {
+    font-size: 18px;
+    margin-bottom: 15px;
+    text-align: center;
+    color: #e94560;
+    font-weight: bold;
+    text-shadow: 0 0 5px #e94560;
+  }
+  .auto-bet-panel {
+    margin-top: 20px;
+  }
+  .auto-bet-toggle {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+  }
+  .switch {
+    position: relative;
+    display: inline-block;
+    width: 60px;
+    height: 34px;
+  }
+  .switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+  }
+  .slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    transition: .4s;
+    border-radius: 34px;
+  }
+  .slider:before {
+    position: absolute;
+    content: "";
+    height: 26px;
+    width: 26px;
+    left: 4px;
+    bottom: 4px;
+    background-color: white;
+    transition: .4s;
+    border-radius: 50%;
+  }
+  input:checked + .slider {
+    background-color: #e94560;
+  }
+  input:checked + .slider:before {
+    transform: translateX(26px);
+  }
+  .auto-bet-options {
+    display: none;
+  }
+  .auto-bet-options.show {
+    display: block;
+  }
+  .countdown {
+    font-size: 24px;
+    font-weight: bold;
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    color: #e94560;
+    background-color: rgba(22, 33, 62, 0.7);
+    padding: 5px 10px;
+    border-radius: 5px;
+    text-shadow: 0 0 10px #e94560;
+  }
+  .achievements {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 20px;
+  }
+  .achievement {
+    width: 40px;
+    height: 40px;
+    background-color: rgba(15, 52, 96, 0.8);
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 24px;
+    color: silver;
+    transition: all 0.3s ease;
+  }
+  .achievement.unlocked {
+    color: gold;
+    text-shadow: 0 0 10px gold;
+    box-shadow: 0 0 15px gold;
+  }
+  @media (max-width: 768px) {
+    .main-nav {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+    .nav-links {
+      margin-top: 20px;
+      flex-direction: column;
+    }
+    .nav-links li {
+      margin-left: 0;
+      margin-bottom: 10px;
+    }
+    .user-actions {
+      margin-top: 20px;
+    }
+    .game-area {
+      flex-direction: column;
+    }
+    .crash-graph, .betting-panel {
+      width: 100%;
+      margin-bottom: 20px;
+    }
+  }
+</style>
+</head>
+<body>
+  <header style="background-color: rgba(22, 33, 62, 0.8); backdrop-filter: blur(5px);">
+    <div class="container">
+      <nav class="main-nav">
+        <div class="logo" style="text-shadow: 0 0 10px #e94560, 0 0 20px #e94560, 0 0 30px #e94560;">CrashBet</div>
+        <ul class="nav-links">
+          <li><a href="https://crash-betting-simulation.example.com/">Início</a></li>
+          <li><a href="https://crash-betting-simulation.example.com/jogos">Jogos</a></li>
+          <li><a href="https://crash-betting-simulation.example.com/promocoes">Promoções</a></li>
+          <li><a href="https://crash-betting-simulation.example.com/sobre">Sobre</a></li>
+        </ul>
+        <div class="user-actions">
+          <button class="btn btn-secondary" style="border: 2px solid #e94560; box-shadow: 0 0 10px #e94560;">Entrar</button>
+          <button class="btn btn-primary" style="box-shadow: 0 0 10px #e94560;">Registrar</button>
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  <div>
+  <div class="container" style="background-color: rgba(26, 26, 46, 0.8); border-radius: 15px; backdrop-filter: blur(10px); padding: 30px; margin-top: 30px; box-shadow: 0 0 20px rgba(233, 69, 96, 0.5);">
+    <div class="game-area">
+      <div class="crash-graph" style="box-shadow: 0 0 20px rgba(233, 69, 96, 0.5);">
+        <canvas class="graph-canvas" id="graphCanvas" width="780" height="400" style="background-image: url('https://crash-betting-simulation.example.com/vaporwave-landscape.jpg'); background-size: cover; background-position: center; background-repeat: no-repeat; border-radius: 10px;"></canvas>
+        <div class="multiplier" style="text-shadow: 0 0 10px #e94560, 0 0 20px #e94560; z-index: 20;">1.58x</div>
+        <div class="countdown" id="countdown" style="text-shadow: 0 0 10px #e94560;"></div>
+        <div class="crash-text" id="crashText" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%) translate(-0.016px, 0px) scale(0, 0); font-size: 72px; font-weight: bold; color: rgb(233, 69, 96); text-shadow: rgb(233, 69, 96) 0px 0px 20px; display: none; z-index: 30; opacity: 0;">CRASH</div>
+        <svg class="rocket" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style="transform: translate(0px, 0px); filter: drop-shadow(rgb(233, 69, 96) 0px 0px 5px);">
+          <path d="M12 2L2 22H22L12 2Z" fill="#e94560"></path>
+        </svg>
+      </div>
+      <div class="betting-panel" style="background-color: rgba(22, 33, 62, 0.8); box-shadow: 0 0 20px rgba(233, 69, 96, 0.5);">
+        <div class="balance" id="balance">Saldo: R$ 999.47</div>
+        <div class="achievements">
+          <div class="achievement" id="achievement1" title="10.000 pontos" style="color: silver; text-shadow: none; box-shadow: none;">🏆</div>
+          <div class="achievement" id="achievement2" title="25.000 pontos" style="color: silver; text-shadow: none; box-shadow: none;">🏆</div>
+          <div class="achievement" id="achievement3" title="50.000 pontos" style="color: silver; text-shadow: none; box-shadow: none;">🏆</div>
+          <div class="achievement" id="achievement4" title="75.000 pontos" style="color: silver; text-shadow: none; box-shadow: none;">🏆</div>
+          <div class="achievement" id="achievement5" title="100.000 pontos" style="color: silver; text-shadow: none; box-shadow: none;">🏆</div>
+        </div>
+        <input type="number" id="betAmount" class="bet-input" placeholder="Valor da aposta" min="1">
+        <input type="number" id="autoCashout" class="bet-input" placeholder="Auto Cashout (opcional)" min="1.01" step="0.01">
+        <button id="placeBetBtn" class="bet-button" style="background-color: #e94560;" disabled>Apostar</button>
+        <button id="cashOutBtn" class="bet-button" style="background-color: rgb(76, 175, 80); display: block;">Parar</button>
+        <div class="auto-bet-panel">
+          <div class="auto-bet-toggle">
+            <span>Auto Aposta</span>
+            <label class="switch">
+              <input type="checkbox" id="autoBetToggle">
+              <span class="slider"></span>
+            </label>
+          </div>
+          <div class="auto-bet-options" id="autoBetOptions">
+            <input type="number" id="autoBetAmount" class="bet-input" placeholder="Valor da aposta automática" min="1">
+            <input type="number" id="autoBetCashout" class="bet-input" placeholder="Auto Cashout" min="1.01" step="0.01">
+            <input type="number" id="betLimit" class="bet-input" placeholder="Número de rodadas" min="1">
+            <button id="startAutoBetBtn" class="bet-button" style="background-color: #e94560; margin-top: 10px;">Iniciar Auto Aposta</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="bet-history" style="background-color: rgba(22, 33, 62, 0.8); box-shadow: 0 0 20px rgba(233, 69, 96, 0.5);">
+      <h3>Histórico de Apostas</h3>
+      <ul class="bet-history-list" id="betHistoryList">
+        <li class="bet-history-item win">1.49x +R$ 1.47</li>
+      </ul>
+    </div>
+    <div class="crash-history" style="background-color: rgba(22, 33, 62, 0.8); box-shadow: 0 0 20px rgba(233, 69, 96, 0.5); margin-top: 20px; padding: 20px; border-radius: 10px;">
+      <h3 style="color: #e94560; text-shadow: 0 0 5px #e94560; margin-top: 0;">Histórico de Crashes</h3>
+      <ul class="crash-history-list" id="crashHistoryList" style="list-style-type: none; padding: 0; display: flex; flex-wrap: wrap; gap: 10px;">
+        <li class="crash-history-item" style="background-color: rgba(15, 52, 96, 0.8); border-radius: 5px; padding: 8px 12px; font-weight: bold; font-size: 14px; color: rgb(244, 67, 54); text-shadow: rgb(244, 67, 54) 0px 0px 5px;">1.58x</li>
+        <li class="crash-history-item" style="background-color: rgba(15, 52, 96, 0.8); border-radius: 5px; padding: 8px 12px; font-weight: bold; font-size: 14px; color: rgb(244, 67, 54); text-shadow: rgb(244, 67, 54) 0px 0px 5px;">1.58x</li>
+        <li class="crash-history-item" style="background-color: rgba(15, 52, 96, 0.8); border-radius: 5px; padding: 8px 12px; font-weight: bold; font-size: 14px; color: rgb(244, 67, 54); text-shadow: rgb(244, 67, 54) 0px 0px 5px;">1.38x</li>
+        <li class="crash-history-item" style="background-color: rgba(15, 52, 96, 0.8); border-radius: 5px; padding: 8px 12px; font-weight: bold; font-size: 14px; color: rgb(244, 67, 54); text-shadow: rgb(244, 67, 54) 0px 0px 5px;">1.92x</li>
+        <li class="crash-history-item" style="background-color: rgba(15, 52, 96, 0.8); border-radius: 5px; padding: 8px 12px; font-weight: bold; font-size: 14px; color: rgb(76, 175, 80); text-shadow: rgb(76, 175, 80) 0px 0px 5px;">2.05x</li>
+        <li class="crash-history-item" style="background-color: rgba(15, 52, 96, 0.8); border-radius: 5px; padding: 8px 12px; font-weight: bold; font-size: 14px; color: rgb(244, 67, 54); text-shadow: rgb(244, 67, 54) 0px 0px 5px;">1.76x</li>
+      </ul>
+    </div>
+    <div class="achievements-explanation" style="background-color: rgba(22, 33, 62, 0.8); box-shadow: 0 0 20px rgba(233, 69, 96, 0.5); margin-top: 20px; padding: 20px; border-radius: 10px;">
+  <h3 style="color: #e94560; text-shadow: 0 0 5px #e94560; margin-top: 0;">Sistema de Conquistas e Recompensas</h3>
+  <p style="color: #ffffff; margin-bottom: 15px;">Desbloqueie conquistas incríveis à medida que seu saldo aumenta! Cada troféu representa um marco em sua jornada de apostas e vem com uma recompensa em dinheiro real!</p>
+  
+  <div class="player-progress" style="background-color: rgba(15, 52, 96, 0.8); padding: 15px; border-radius: 10px; margin-bottom: 20px;">
+  <h4 style="color: #e94560; margin-top: 0; margin-bottom: 10px;">Sua Pontuação Atual</h4>
+  <div class="progress-bar" style="background-color: #444; height: 20px; border-radius: 10px; overflow: hidden;">
+    <div id="playerProgressBar" style="width: 0%; height: 100%; background-color: #e94560; transition: width 0.5s ease-in-out;"></div>
+  </div>
+  <p id="playerScore" style="color: #ffffff; margin-top: 10px; text-align: center;">Pontuação: R$ <span id="currentScore">998.00</span> / R$ 100.000,00</p>
+</div>
+  
+  <ul style="list-style-type: none; padding: 0;">
+    <li style="margin-bottom: 10px;">🏆 10.000 pontos - Iniciante Promissor (Recompensa: R$ 10)</li>
+    <li style="margin-bottom: 10px;">🏆 25.000 pontos - Apostador Experiente (Recompensa: R$ 25)</li>
+    <li style="margin-bottom: 10px;">🏆 50.000 pontos - Mestre das Apostas (Recompensa: R$ 50)</li>
+    <li style="margin-bottom: 10px;">🏆 75.000 pontos - Lenda do Crash (Recompensa: R$ 75)</li>
+    <li style="margin-bottom: 10px;">🏆 100.000 pontos - Rei do CrashBet (Recompensa: R$ 100)</li>
+  </ul>
+  <p style="color: #ffffff;">Para desbloquear as conquistas, continue apostando e aumentando seu saldo. Quando atingir cada marco, o troféu correspondente será desbloqueado automaticamente, brilhando em dourado no topo da sua tela de apostas! Além disso, você receberá instantaneamente a recompensa em dinheiro associada a cada conquista, que será adicionada ao seu saldo.</p>
+</div>
+  </div>
+</div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.9.1/gsap.min.js"></script>
+  <script>
+    // Variáveis globais
+    let balance = 999.47;
+    let isBetting = false;
+    let currentMultiplier = 1;
+    let rocketInterval;
+    let countdownInterval;
+    let autoBetEnabled = false;
+    let autoBetAmount = 0;
+    let autoBetCashout = 0;
+    let betLimit = 0;
+    let autoBetCount = 0;
+    let startTime;
+    let isCountingDown = false;
+    let activeBet = false;
+    let autoCashoutValue = 0;
+
+    // Elementos do DOM
+    const balanceEl = document.getElementById('balance');
+    const betAmountEl = document.getElementById('betAmount');
+    const autoCashoutEl = document.getElementById('autoCashout');
+    const placeBetBtn = document.getElementById('placeBetBtn');
+    const cashOutBtn = document.getElementById('cashOutBtn');
+    const multiplierEl = document.querySelector('.multiplier');
+    const rocketEl = document.querySelector('.rocket');
+    const countdownEl = document.getElementById('countdown');
+    const canvas = document.getElementById('graphCanvas');
+    const ctx = canvas.getContext('2d');
+    const autoBetToggle = document.getElementById('autoBetToggle');
+    const autoBetOptions = document.getElementById('autoBetOptions');
+    const autoBetAmountEl = document.getElementById('autoBetAmount');
+    const autoBetCashoutEl = document.getElementById('autoBetCashout');
+    const betLimitEl = document.getElementById('betLimit');
+    const betHistoryList = document.getElementById('betHistoryList');
+    const crashHistoryList = document.getElementById('crashHistoryList');
+    const crashTextEl = document.getElementById('crashText');
+    const startAutoBetBtn = document.getElementById('startAutoBetBtn');
+    const achievements = [
+      document.getElementById('achievement1'),
+      document.getElementById('achievement2'),
+      document.getElementById('achievement3'),
+      document.getElementById('achievement4'),
+      document.getElementById('achievement5')
+    ];
+    const playerProgressBar = document.getElementById('playerProgressBar');
+    const currentScoreEl = document.getElementById('currentScore');
+
+    // Funções auxiliares
+    function updateBalance(amount) {
+      balance += amount;
+      balanceEl.textContent = `Saldo: R$ ${balance.toFixed(2)}`;
+      updateAchievements();
+      updateProgressBar();
+    }
+
+    function updateProgressBar() {
+      const progress = (balance / 100000) * 100;
+      playerProgressBar.style.width = `${progress}%`;
+      currentScoreEl.textContent = balance.toFixed(2);
+    }
+
+    function updateAchievements() {
+      const milestones = [10000, 25000, 50000, 75000, 100000];
+      for (let i = 0; i < milestones.length; i++) {
+        if (balance >= milestones[i]) {
+          achievements[i].style.color = 'gold';
+          achievements[i].style.textShadow = '0 0 10px gold';
+          achievements[i].style.boxShadow = '0 0 15px gold';
+        } else {
+          achievements[i].style.color = 'silver';
+          achievements[i].style.textShadow = 'none';
+          achievements[i].style.boxShadow = 'none';
+        }
+      }
+    }
+
+    function addBetToHistory(multiplier, amount, isWin) {
+      const listItem = document.createElement('li');
+      listItem.classList.add('bet-history-item');
+      listItem.classList.add(isWin ? 'win' : 'lose');
+      listItem.textContent = `${multiplier.toFixed(2)}x ${isWin ? '+' : '-'}R$ ${amount.toFixed(2)}`;
+      betHistoryList.prepend(listItem);
+
+      if (betHistoryList.children.length > 10) {
+        betHistoryList.removeChild(betHistoryList.lastChild);
+      }
+    }
+
+    function addCrashToHistory(multiplier) {
+      const listItem = document.createElement('li');
+      listItem.classList.add('crash-history-item');
+      listItem.textContent = `${multiplier.toFixed(2)}x`;
+      listItem.style.backgroundColor = 'rgba(15, 52, 96, 0.8)';
+      listItem.style.borderRadius = '5px';
+      listItem.style.padding = '8px 12px';
+      listItem.style.fontWeight = 'bold';
+      listItem.style.fontSize = '14px';
+      listItem.style.color = multiplier >= 2 ? '#4caf50' : '#f44336';
+      listItem.style.textShadow = `0 0 5px ${multiplier >= 2 ? '#4caf50' : '#f44336'}`;
+      crashHistoryList.prepend(listItem);
+
+      if (crashHistoryList.children.length > 10) {
+        crashHistoryList.removeChild(crashHistoryList.lastChild);
+      }
+    }
+
+    function startGame() {
+      if (isCountingDown) return;
+      
+      currentMultiplier = 1;
+      isBetting = true;
+      placeBetBtn.disabled = true;
+      cashOutBtn.disabled = false;
+      cashOutBtn.style.display = 'block';
+      startTime = Date.now();
+
+      // Resetar o gráfico
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      ctx.beginPath();
+      ctx.moveTo(0, canvas.height);
+
+      // Configurar o estilo da linha
+      ctx.strokeStyle = '#e94560';
+      ctx.lineWidth = 8;
+
+      // Animar o foguete
+      gsap.to(rocketEl, {
+        x: 0,
+        y: 0,
+        rotation: 0,
+        duration: 0,
+      });
+
+      // Esconder o texto de CRASH
+      crashTextEl.style.display = 'none';
+
+      startRocketAnimation();
+    }
+
+    function startRocketAnimation() {
+      rocketInterval = setInterval(() => {
+        const elapsedTime = (Date.now() - startTime) / 1000; // Tempo decorrido em segundos
+        const speedFactor = 1 / (1 + elapsedTime * 0.1); // Fator de velocidade que diminui com o tempo
+        
+        currentMultiplier += 0.01 * speedFactor; // Aumenta mais rapidamente
+        multiplierEl.textContent = `${currentMultiplier.toFixed(2)}x`;
+
+        const progress = (currentMultiplier - 1) / 6; // Assumindo um máximo de 7x
+        const x = canvas.width * progress;
+        const y = canvas.height - (Math.pow(progress, 0.7) * canvas.height); // Curva mais acentuada no início
+
+        ctx.lineTo(x, y);
+        ctx.stroke();
+
+        gsap.to(rocketEl, {
+          x: x,
+          y: y,
+          rotation: Math.atan2(canvas.height - y, x) * (180 / Math.PI),
+          duration: 0.1,
+        });
+
+        // Verificar auto cashout
+        if (activeBet && autoCashoutValue > 1 && currentMultiplier >= autoCashoutValue) {
+          cashOut();
+        }
+
+        // Ajusta a chance de crash para permitir mais crashes acima de 2x
+        const crashChance = 0.005 * (1 + elapsedTime / 15); // Reduzido para permitir mais crashes acima de 2x
+        if (Math.random() < crashChance || currentMultiplier >= 7) {
+          endGame();
+        }
+      }, 45);
+    }
+
+    function startCountdown() {
+      isCountingDown = true;
+      let count = 10; // Alterado para 10 segundos
+      countdownEl.textContent = count;
+      countdownInterval = setInterval(() => {
+        count--;
+        if (count > 0) {
+          countdownEl.textContent = count;
+        } else {
+          clearInterval(countdownInterval);
+          countdownEl.textContent = '';
+          isCountingDown = false;
+          startGame();
+        }
+      }, 1000);
+    }
+
+    function endGame() {
+      isBetting = false;
+      clearInterval(rocketInterval);
+      placeBetBtn.disabled = false;
+      cashOutBtn.disabled = true;
+      cashOutBtn.style.display = 'none';
+
+      addCrashToHistory(currentMultiplier);
+
+      if (activeBet) {
+        const betAmount = parseFloat(betAmountEl.value);
+        updateBalance(-betAmount);
+        addBetToHistory(currentMultiplier, betAmount, false);
+        activeBet = false;
+      }
+
+      // Mostrar o texto de CRASH
+      crashTextEl.style.display = 'block';
+      gsap.from(crashTextEl, {
+        scale: 0,
+        opacity: 0,
+        duration: 0.5,
+        ease: "back.out(1.7)"
+      });
+
+      setTimeout(() => {
+        gsap.to(crashTextEl, {
+          scale: 0,
+          opacity: 0,
+          duration: 0.5,
+          ease: "back.in(1.7)",
+          onComplete: () => {
+            crashTextEl.style.display = 'none';
+            startCountdown();
+          }
+        });
+      }, 2000);
+
+      if (autoBetEnabled) {
+        autoBetCount++;
+        if (autoBetCount < betLimit) {
+          setTimeout(() => {
+            placeBet();
+          }, 3000);
+        } else {
+          autoBetEnabled = false;
+          autoBetCount = 0;
+          startAutoBetBtn.textContent = 'Iniciar Auto Aposta';
+          startAutoBetBtn.disabled = false;
+        }
+      }
+    }
+
+    function cashOut() {
+      if (activeBet) {
+        const betAmount = parseFloat(betAmountEl.value);
+        const winAmount = betAmount * (currentMultiplier - 1);
+        updateBalance(betAmount + winAmount);
+        addBetToHistory(currentMultiplier, winAmount, true);
+        activeBet = false;
+        cashOutBtn.disabled = true;
+        cashOutBtn.style.display = 'none';
+      }
+    }
+
+    function placeBet() {
+      const betAmount = parseFloat(betAmountEl.value);
+      autoCashoutValue = parseFloat(autoCashoutEl.value) || 0;
+      if (!isNaN(betAmount) && betAmount > 0 && betAmount <= balance) {
+        updateBalance(-betAmount);
+        activeBet = true;
+        placeBetBtn.disabled = true;
+        cashOutBtn.disabled = false;
+        cashOutBtn.style.display = 'block';
+      }
+    }
+
+    // Event Listeners
+    placeBetBtn.addEventListener('click', placeBet);
+    cashOutBtn.addEventListener('click', cashOut);
+
+    autoBetToggle.addEventListener('change', (e) => {
+      autoBetEnabled = e.target.checked;
+      autoBetOptions.classList.toggle('show', autoBetEnabled);
+      startAutoBetBtn.style.display = autoBetEnabled ? 'block' : 'none';
+    });
+
+    startAutoBetBtn.addEventListener('click', () => {
+      autoBetAmount = parseFloat(autoBetAmountEl.value);
+      autoBetCashout = parseFloat(autoBetCashoutEl.value);
+      betLimit = parseInt(betLimitEl.value);
+      autoBetCount = 0;
+      if (!isNaN(autoBetAmount) && autoBetAmount > 0 && !isNaN(autoBetCashout) && autoBetCashout > 1 && !isNaN(betLimit) && betLimit > 0) {
+        autoBetEnabled = true;
+        betAmountEl.value = autoBetAmount;
+        autoCashoutEl.value = autoBetCashout;
+        placeBet();
+        startAutoBetBtn.textContent = 'Auto Aposta Ativada';
+        startAutoBetBtn.disabled = true;
+      } else {
+        alert('Por favor, insira valores válidos para a aposta automática, auto cashout e o número de rodadas.');
+      }
+    });
+
+    // Inicialização
+    updateBalance(0);
+    startCountdown();
+    updateAchievements();
+    updateProgressBar();
+  </script>
+
+</body></html>
